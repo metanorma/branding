@@ -24,5 +24,5 @@ Files follow `metanorma-logo_{variant}-{treatment}[-old].{ext}`:
 
 ## Workflow
 
-- This repo currently has no commits and `main` tracks `origin/master` upstream — be aware of the branch-name skew when pushing.
+- Default branch is `main` (local tracks `origin/main`); the old `master` skew was retired — there is no `master` branch.
 - All changes go through a PR on a feature branch (per global rule: never commit/push directly to main, never push tags).
