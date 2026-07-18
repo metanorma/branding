@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metanorma — Animated Lighthouse Icon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --dk: #7c60e6; --lt: #355699; }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            font-family: 'JetBrains Mono', monospace;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        main { display: flex; flex-direction: column; min-height: 100vh; }
+
+        .row { display: flex; flex: 1; }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-height: 50vh;
+            position: relative;
+            padding: 2.5rem 2rem;
+            overflow: hidden;
+        }
+
+        .panel.dark {
+            background:
+                radial-gradient(ellipse 70% 55% at 50% 38%, rgba(124,96,230,0.18) 0%, transparent 100%),
+                radial-gradient(ellipse at 50% 50%, #0a0a1a 0%, #050510 100%);
+        }
+
+        .panel.dark::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 7% 14%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(1px 1px at 23% 42%, rgba(255,255,255,0.15), transparent),
+                radial-gradient(1px 1px at 48% 6%, rgba(255,255,255,0.22), transparent),
+                radial-gradient(1px 1px at 69% 74%, rgba(255,255,255,0.18), transparent),
+                radial-gradient(1px 1px at 88% 28%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(1.5px 1.5px at 42% 22%, rgba(200,220,255,0.2), transparent),
+                radial-gradient(1px 1px at 55% 92%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(1px 1px at 91% 85%, rgba(255,255,255,0.14), transparent);
+            pointer-events: none;
+        }
+
+        .panel.light {
+            background:
+                radial-gradient(ellipse 70% 50% at 50% 50%, rgba(124,96,230,0.05) 0%, transparent 100%),
+                radial-gradient(ellipse at 50% 40%, #faf8f4 0%, #f0ede5 100%);
+        }
+
+        .icon-wrap {
+            position: relative;
+            width: min(42vmin, 320px);
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .icon-wrap svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glow {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .g1 { width: 90%; aspect-ratio: 1; transform: translate(-50%, -50%); }
+        .g2 { width: 55%; aspect-ratio: 1; transform: translate(-50%, -50%); }
+
+        .panel.dark .g1 {
+            background: radial-gradient(circle, rgba(124,96,230,0.18) 0%, transparent 70%);
+            filter: blur(55px);
+            animation: breathe 7s ease-in-out infinite;
+        }
+        .panel.dark .g2 {
+            background: radial-gradient(circle, rgba(90,156,250,0.14) 0%, transparent 60%);
+            filter: blur(25px);
+            animation: breathe 7s ease-in-out infinite 1.5s;
+        }
+        .panel.light .g1 {
+            background: radial-gradient(circle, rgba(124,96,230,0.08) 0%, transparent 70%);
+            filter: blur(55px);
+        }
+        .panel.light .g2 {
+            background: radial-gradient(circle, rgba(85,90,190,0.06) 0%, transparent 55%);
+            filter: blur(25px);
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        .label {
+            position: relative;
+            z-index: 1;
+            margin-top: 1.2rem;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300;
+            font-size: 1rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+        .panel.dark .label { color: rgba(200,184,255,0.45); }
+        .panel.light .label { color: rgba(85,90,190,0.5); }
+
+        .sep-v {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent 5%, rgba(124,96,230,0.1) 50%, transparent 95%);
+        }
+
+        .sep-h {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent 5%, rgba(124,96,230,0.1) 50%, transparent 95%);
+        }
+
+        .mode-nav {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mode-nav button {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(124,96,230,0.3);
+            background: rgba(10,10,26,0.8);
+            color: rgba(200,184,255,0.6);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .mode-nav button:hover {
+            border-color: rgba(124,96,230,0.6);
+            color: rgba(200,184,255,0.9);
+        }
+
+        .mode-nav button.active {
+            background: rgba(124,96,230,0.18);
+            border-color: rgba(124,96,230,0.55);
+            color: #c8b8ff;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(200,184,255,0.45);
+            background: rgba(10,10,26,0.6);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(124,96,230,0.2);
+            border-radius: 4px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .g1, .g2 { animation: none; }
+        }
+
+        @media (max-width: 768px) {
+            .row { flex-direction: column; }
+            .panel { padding: 2rem 1rem; }
+            .icon-wrap { width: min(70vmin, 320px); }
+            .label { font-size: 0.9rem; }
+            .mode-nav button { padding: 0.4rem 0.7rem; font-size: 0.6rem; }
+            .sep-v { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="mode-nav">
+        <button data-mode="rotate" class="active">Rotate</button>
+        <button data-mode="static">Static</button>
+    </nav>
+
+    <p class="hint">Move to aim · Click to kick · Hold for SOS · the day shift dozes</p>
+
+    <main>
+        <div class="row">
+            <section class="panel dark">
+                <div class="icon-wrap">
+                    <div class="glow g1"></div>
+                    <div class="glow g2"></div>
+                    <div id="lh-dark"></div>
+                </div>
+                <p class="label">Metanorma · Dark</p>
+            </section>
+            <div class="sep-v"></div>
+            <section class="panel light">
+                <div class="icon-wrap">
+                    <div class="glow g1"></div>
+                    <div class="glow g2"></div>
+                    <div id="lh-light"></div>
+                </div>
+                <p class="label">Metanorma · Light</p>
+            </section>
+        </div>
+    </main>
+
+    <script src="lighthouse.js"></script>
+    <script>
+        console.log('%c psst — this lighthouse speaks Morse (hold the click) and dances for the Konami code ',
+            'background:#1a1a2e;color:#c8b8ff;padding:4px 8px;border-radius:4px;');
+
+        var dk = new Lighthouse('#lh-dark', {
+            theme: 'dark', mode: 'rotate', period: 6.5
+        });
+        var lt = new Lighthouse('#lh-light', {
+            theme: 'light', mode: 'rotate', period: 6.5, delay: 800
+        });
+
+        var all = [dk, lt];
+        var btns = document.querySelectorAll('.mode-nav button');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener('click', function () {
+                var m = this.getAttribute('data-mode');
+                for (var j = 0; j < all.length; j++) all[j].setMode(m);
+                for (var k = 0; k < btns.length; k++) {
+                    btns[k].classList.toggle('active', btns[k].getAttribute('data-mode') === m);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
